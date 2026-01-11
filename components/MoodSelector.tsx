@@ -8,20 +8,20 @@ type Props = {
 };
 
 export function MoodSelector({ selectedMood, onSelect }: Props) {
-  const { colors, typography, isDark } = useTheme();
+  const { colors, typography, shape, stateLayerOpacity } = useTheme();
 
   return (
     <View
       style={[
         styles.container,
         {
-          backgroundColor: isDark ? colors.surfaceContainer : '#FFFFFF',
-          borderColor: isDark ? 'transparent' : '#E0E0E0',
-          borderWidth: isDark ? 0 : 1,
+          // MD3 Filled Card: surfaceContainerHighest, no shadow
+          backgroundColor: colors.surfaceContainerHighest,
+          borderRadius: shape.medium, // 12dp
         },
       ]}
     >
-      <Text style={[typography.titleMedium, styles.title, { color: colors.onSurface }]}>
+      <Text style={[typography.titleSmall, styles.title, { color: colors.onSurface }]}>
         今の気分は？
       </Text>
       <View style={styles.moodRow}>
@@ -32,33 +32,70 @@ export function MoodSelector({ selectedMood, onSelect }: Props) {
               key={mood.type}
               onPress={() => onSelect(mood.type)}
               accessible={true}
-              accessibilityLabel={`気分: ${mood.emoji}`}
+              accessibilityLabel={`気分: ${mood.label}`}
               accessibilityRole="button"
               accessibilityState={{ selected: isSelected }}
-              style={[
-                styles.moodButton,
-                isSelected ? styles.moodButtonSelected : styles.moodButtonDefault,
-              ]}
             >
-              <Text style={styles.emoji}>{mood.emoji}</Text>
+              {({ pressed }) => (
+                <View
+                  style={[
+                    styles.moodButton,
+                    {
+                      backgroundColor: isSelected
+                        ? colors.secondaryContainer
+                        : colors.surfaceContainerHigh,
+                      borderColor: isSelected ? colors.secondary : 'transparent',
+                      borderWidth: isSelected ? 2 : 0,
+                      borderRadius: shape.large, // 16dp
+                    },
+                  ]}
+                >
+                  {/* MD3 State layer */}
+                  {pressed && (
+                    <View
+                      style={[
+                        styles.stateLayer,
+                        {
+                          backgroundColor: isSelected
+                            ? colors.onSecondaryContainer
+                            : colors.onSurface,
+                          opacity: stateLayerOpacity.pressed,
+                          borderRadius: shape.large,
+                        },
+                      ]}
+                    />
+                  )}
+                  <Text style={styles.emoji}>{mood.emoji}</Text>
+                </View>
+              )}
             </Pressable>
           );
         })}
       </View>
+      {selectedMood && (
+        <View
+          style={[
+            styles.selectedLabel,
+            {
+              backgroundColor: colors.secondaryContainer,
+              borderRadius: shape.small, // 8dp
+            },
+          ]}
+        >
+          <Text style={[typography.labelSmall, { color: colors.onSecondaryContainer }]}>
+            {MOODS.find(m => m.type === selectedMood)?.label || ''}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    minWidth: 280,
-    borderRadius: 24,
-    padding: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 6,
+    width: '100%',
+    maxWidth: 320,
+    padding: 16, // MD3 card padding
   },
   title: {
     textAlign: 'center',
@@ -70,29 +107,22 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   moodButton: {
-    width: 56,
-    height: 56,
+    width: 48, // MD3 touch target minimum
+    height: 48,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 16,
+    overflow: 'hidden',
   },
-  moodButtonDefault: {
-    backgroundColor: '#F5F5F5',
-    borderWidth: 2,
-    borderColor: '#E0E0E0',
-  },
-  moodButtonSelected: {
-    backgroundColor: '#7AF8D8',
-    borderWidth: 3,
-    borderColor: '#006B5A',
-    transform: [{ scale: 1.1 }],
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
+  stateLayer: {
+    ...StyleSheet.absoluteFillObject,
   },
   emoji: {
-    fontSize: 26,
+    fontSize: 22,
+  },
+  selectedLabel: {
+    alignSelf: 'center',
+    marginTop: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
   },
 });

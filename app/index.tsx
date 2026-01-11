@@ -9,7 +9,7 @@ import { WalkingStats } from '@/components/WalkingStats';
 export default function HomeScreen() {
   const router = useRouter();
   const { state, elapsedTime, distance, start, stop } = useWalkingContext();
-  const { colors, typography, spacing, isDark } = useTheme();
+  const { colors, typography, spacing, elevation, shape } = useTheme();
 
   const handleStop = () => {
     stop();
@@ -17,17 +17,22 @@ export default function HomeScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? colors.background : '#FAFAFA' }]}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
-      <View style={[styles.header, { paddingTop: spacing.xxxl, paddingHorizontal: spacing.lg }]}>
+      <View style={[styles.header, { paddingTop: spacing.xxxl + 16 }]}>
         <View style={styles.titleRow}>
-          <View style={styles.iconBadge}>
-            <Ionicons name="walk" size={28} color="#FFFFFF" />
+          <View
+            style={[
+              styles.iconBadge,
+              { backgroundColor: colors.primaryContainer },
+            ]}
+          >
+            <Ionicons name="walk" size={24} color={colors.onPrimaryContainer} />
           </View>
           <Text
             style={[
-              typography.headlineMedium,
-              { color: colors.onBackground, fontWeight: '700', marginLeft: spacing.sm },
+              typography.headlineSmall,
+              { color: colors.onBackground, marginLeft: spacing.sm },
             ]}
           >
             ウォーキング
@@ -36,7 +41,7 @@ export default function HomeScreen() {
         <Text
           style={[
             typography.bodyMedium,
-            { color: colors.onSurfaceVariant, marginTop: spacing.xs },
+            { color: colors.onSurfaceVariant, marginTop: spacing.xs, textAlign: 'center' },
           ]}
         >
           {state === 'walking' ? '記録中...' : '開始ボタンを押してウォーキングを始めましょう'}
@@ -44,9 +49,11 @@ export default function HomeScreen() {
       </View>
 
       {/* Main Content */}
-      <View style={[styles.content, { gap: spacing.xl }]}>
+      <View style={styles.content}>
         {state === 'walking' && (
-          <WalkingStats elapsedTime={elapsedTime} distance={distance} />
+          <View style={styles.statsContainer}>
+            <WalkingStats elapsedTime={elapsedTime} distance={distance} />
+          </View>
         )}
 
         <WalkingButton
@@ -62,18 +69,25 @@ export default function HomeScreen() {
           <View
             style={[
               styles.hintCard,
+              elevation[1],
               {
-                backgroundColor: isDark ? colors.surfaceContainer : '#FFFFFF',
-                borderColor: isDark ? 'transparent' : '#E0E0E0',
-                borderWidth: isDark ? 0 : 1,
+                backgroundColor: colors.surfaceContainerHigh,
+                borderRadius: shape.medium,
               },
             ]}
           >
-            <Ionicons name="information-circle-outline" size={20} color={colors.primary} />
+            <View
+              style={[
+                styles.hintIconContainer,
+                { backgroundColor: colors.tertiaryContainer },
+              ]}
+            >
+              <Ionicons name="location-outline" size={18} color={colors.onTertiaryContainer} />
+            </View>
             <Text
               style={[
                 typography.bodySmall,
-                { color: colors.onSurfaceVariant, marginLeft: spacing.sm, flex: 1 },
+                { color: colors.onSurfaceVariant, flex: 1 },
               ]}
             >
               歩行中は位置情報を使って距離を計測します
@@ -91,6 +105,7 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
+    paddingHorizontal: 24,
   },
   titleRow: {
     flexDirection: 'row',
@@ -99,8 +114,7 @@ const styles = StyleSheet.create({
   iconBadge: {
     width: 44,
     height: 44,
-    borderRadius: 12,
-    backgroundColor: '#10B981',
+    borderRadius: 12, // shape.medium
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -109,6 +123,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 24,
+    gap: 32,
+  },
+  statsContainer: {
+    width: '100%',
+    alignItems: 'center',
   },
   footer: {
     paddingHorizontal: 24,
@@ -117,11 +136,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    borderRadius: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    gap: 12,
+  },
+  hintIconContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

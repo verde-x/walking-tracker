@@ -8,14 +8,16 @@ import { WalkingStats } from '@/components/WalkingStats';
 import { MoodSelector } from '@/components/MoodSelector';
 import { MoodType } from '@/types/walking';
 
+// MD3 Button specs
+const BUTTON_HEIGHT = 40;
+const BUTTON_RADIUS = 20; // Full rounded (height / 2)
+const ICON_SIZE = 18;
+
 export default function ResultScreen() {
   const router = useRouter();
   const { currentRecord, saveWithMood } = useWalkingContext();
-  const { colors, typography, spacing, isDark } = useTheme();
+  const { colors, typography, spacing, stateLayerOpacity } = useTheme();
   const [selectedMood, setSelectedMood] = useState<MoodType>();
-
-  const GREEN = '#10B981';
-  const GREEN_DARK = '#059669';
 
   useEffect(() => {
     if (!currentRecord) {
@@ -38,30 +40,21 @@ export default function ResultScreen() {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? colors.background : '#FAFAFA' }]}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header with success icon */}
-      <View style={[styles.header, { paddingTop: spacing.xxxl }]}>
+      <View style={[styles.header, { paddingTop: spacing.xxxl + 8 }]}>
         <View
-          style={{
-            width: 80,
-            height: 80,
-            borderRadius: 40,
-            backgroundColor: GREEN,
-            alignItems: 'center',
-            justifyContent: 'center',
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.2,
-            shadowRadius: 8,
-            elevation: 6,
-          }}
+          style={[
+            styles.successIcon,
+            { backgroundColor: colors.primaryContainer },
+          ]}
         >
-          <Ionicons name="checkmark" size={40} color="#FFFFFF" />
+          <Ionicons name="checkmark" size={32} color={colors.onPrimaryContainer} />
         </View>
         <Text
           style={[
-            typography.headlineMedium,
-            { color: colors.onBackground, fontWeight: '700', marginTop: spacing.md },
+            typography.headlineSmall,
+            { color: colors.onBackground, marginTop: spacing.md },
           ]}
         >
           お疲れさまでした！
@@ -77,7 +70,7 @@ export default function ResultScreen() {
       </View>
 
       {/* Stats and Mood */}
-      <View style={[styles.content, { gap: spacing.lg, paddingHorizontal: spacing.lg }]}>
+      <View style={styles.content}>
         <WalkingStats
           elapsedTime={currentRecord.duration || 0}
           distance={currentRecord.distance || 0}
@@ -86,67 +79,63 @@ export default function ResultScreen() {
         <MoodSelector selectedMood={selectedMood} onSelect={setSelectedMood} />
       </View>
 
-      {/* Action Buttons */}
-      <View style={[styles.footer, { gap: spacing.md, paddingBottom: spacing.xxxl }]}>
-        {/* Primary Button - Save */}
-        <Pressable
-          onPress={handleSave}
-          accessible={true}
-          accessibilityLabel="保存"
-          accessibilityRole="button"
-        >
-          {({ pressed }) => (
-            <View
-              style={{
-                height: 56,
-                backgroundColor: pressed ? GREEN_DARK : GREEN,
-                borderRadius: 16,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                shadowColor: '#000',
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.2,
-                shadowRadius: 8,
-                elevation: 6,
-                transform: [{ scale: pressed ? 0.98 : 1 }],
-              }}
-            >
-              <Ionicons name="save-outline" size={22} color="#FFFFFF" style={{ marginRight: 8 }} />
-              <Text style={{ fontSize: 16, fontWeight: '600', color: '#FFFFFF' }}>
-                保存する
-              </Text>
-            </View>
-          )}
-        </Pressable>
+      {/* Action Buttons - MD3 inline style */}
+      <View style={[styles.footer, { paddingBottom: spacing.xxxl }]}>
+        <View style={styles.buttonRow}>
+          {/* MD3 Text Button (tertiary action) */}
+          <Pressable
+            onPress={handleSkip}
+            accessible={true}
+            accessibilityLabel="スキップ"
+            accessibilityRole="button"
+          >
+            {({ pressed }) => (
+              <View style={styles.textButton}>
+                {pressed && (
+                  <View
+                    style={[
+                      styles.stateLayer,
+                      { backgroundColor: colors.primary, opacity: stateLayerOpacity.pressed },
+                    ]}
+                  />
+                )}
+                <Text style={[typography.labelLarge, { color: colors.primary }]}>
+                  スキップ
+                </Text>
+              </View>
+            )}
+          </Pressable>
 
-        {/* Secondary Button - Skip */}
-        <Pressable
-          onPress={handleSkip}
-          accessible={true}
-          accessibilityLabel="スキップ"
-          accessibilityRole="button"
-        >
-          {({ pressed }) => (
-            <View
-              style={{
-                height: 48,
-                borderRadius: 16,
-                borderWidth: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: pressed
-                  ? (isDark ? colors.surfaceContainerHigh : '#F0F0F0')
-                  : (isDark ? 'transparent' : '#FFFFFF'),
-                borderColor: isDark ? colors.outline : '#BDBDBD',
-              }}
-            >
-              <Text style={{ fontSize: 16, fontWeight: '500', color: colors.onSurface }}>
-                スキップ
-              </Text>
-            </View>
-          )}
-        </Pressable>
+          {/* MD3 Filled Button (primary action) */}
+          <Pressable
+            onPress={handleSave}
+            accessible={true}
+            accessibilityLabel="保存"
+            accessibilityRole="button"
+          >
+            {({ pressed }) => (
+              <View
+                style={[
+                  styles.filledButton,
+                  { backgroundColor: colors.primary },
+                ]}
+              >
+                {pressed && (
+                  <View
+                    style={[
+                      styles.stateLayer,
+                      { backgroundColor: colors.onPrimary, opacity: stateLayerOpacity.pressed },
+                    ]}
+                  />
+                )}
+                <Ionicons name="checkmark" size={ICON_SIZE} color={colors.onPrimary} />
+                <Text style={[typography.labelLarge, { color: colors.onPrimary }]}>
+                  保存
+                </Text>
+              </View>
+            )}
+          </Pressable>
+        </View>
       </View>
     </View>
   );
@@ -160,12 +149,49 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 24,
   },
+  successIcon: {
+    width: 64,
+    height: 64,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 24,
+    gap: 16,
   },
   footer: {
     paddingHorizontal: 24,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    gap: 8,
+  },
+  filledButton: {
+    height: BUTTON_HEIGHT,
+    borderRadius: BUTTON_RADIUS,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingLeft: 16, // MD3: with icon
+    paddingRight: 24,
+    gap: 8,
+    overflow: 'hidden',
+  },
+  textButton: {
+    height: BUTTON_HEIGHT,
+    borderRadius: BUTTON_RADIUS,
+    paddingHorizontal: 12, // MD3: text button padding
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  stateLayer: {
+    ...StyleSheet.absoluteFillObject,
   },
 });
