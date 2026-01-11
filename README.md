@@ -1,50 +1,65 @@
-# Welcome to your Expo app 👋
+# Walking Tracker
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+日々のウォーキングを記録し、運動習慣の継続をサポートするモバイルアプリケーション。
 
-## Get started
+## 機能
 
-1. Install dependencies
+- ウォーキングの開始/終了を記録
+- GPS による距離計測
+- 経過時間のリアルタイム表示
+- ウォーキング後の気分登録
+- 履歴の保存
 
-   ```bash
-   npm install
-   ```
+## 技術スタック
 
-2. Start the app
+- React Native (Expo SDK ~54.0)
+- TypeScript
+- Expo Router (ファイルベースルーティング)
+- NativeWind (Tailwind CSS for React Native)
 
-   ```bash
-   npx expo start
-   ```
+## 開発環境のセットアップ
 
-In the output, you'll find options to open the app in a
+### 必要要件
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Node.js 18+
+- npm または yarn
+- iOS Simulator (Mac) または Android Emulator
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### インストール
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 開発サーバーの起動
 
-## Learn more
+```bash
+npm start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### プラットフォーム別起動
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npm run ios      # iOS Simulator
+npm run android  # Android Emulator
+npm run web      # Web ブラウザ
+```
 
-## Join the community
+## プロジェクト構成
 
-Join our community of developers creating universal apps.
+```
+app/              # ルーティング（ファイルベース）
+  _layout.tsx     # ルートレイアウト
+  index.tsx       # ホーム画面
+components/       # 再利用可能なコンポーネント
+docs/             # ドキュメント
+  requirements.md # 要求定義書
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## ドキュメント
+
+- [要求定義書](docs/requirements.md)
+
+## ライセンス
+
+Private
