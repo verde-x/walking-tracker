@@ -12,6 +12,7 @@ This is a React Native mobile application built with Expo and TypeScript. The pr
 - React 19.1.0
 - Expo Router ~6.0 (file-based routing)
 - TypeScript 5.9
+- NativeWind (Tailwind CSS for React Native)
 - React Native Reanimated & Gesture Handler for animations
 
 **Important Configuration:**
@@ -68,3 +69,7 @@ The `app-example/` directory contains the original Expo starter code for referen
 - Strict mode is enabled
 - Path aliasing with `@/*` for imports from root
 - Extends Expo's base TypeScript configuration
+
+## Git Conventions
+
+- Commit messages should be concise and written in English
