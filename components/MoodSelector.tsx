@@ -1,6 +1,5 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { MoodType, MOODS } from '@/types/walking';
-import { useTheme } from '@/contexts/ThemeContext';
+import { Box, Card, Text, HStack, Pressable } from '@/components/ui';
 
 type Props = {
   selectedMood?: MoodType;
@@ -8,121 +7,38 @@ type Props = {
 };
 
 export function MoodSelector({ selectedMood, onSelect }: Props) {
-  const { colors, typography, shape, stateLayerOpacity } = useTheme();
-
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          // MD3 Filled Card: surfaceContainerHighest, no shadow
-          backgroundColor: colors.surfaceContainerHighest,
-          borderRadius: shape.medium, // 12dp
-        },
-      ]}
-    >
-      <Text style={[typography.titleSmall, styles.title, { color: colors.onSurface }]}>
+    <Card variant="elevated" className="w-full p-5">
+      <Text className="text-center text-gray-500 font-medium mb-5">
         今の気分は？
       </Text>
-      <View style={styles.moodRow}>
+      <HStack space="md" className="justify-center flex-wrap">
         {MOODS.map((mood) => {
           const isSelected = selectedMood === mood.type;
           return (
             <Pressable
               key={mood.type}
               onPress={() => onSelect(mood.type)}
-              accessible={true}
               accessibilityLabel={`気分: ${mood.label}`}
-              accessibilityRole="button"
               accessibilityState={{ selected: isSelected }}
+              className={`w-14 h-14 rounded-2xl items-center justify-center border-2 ${
+                isSelected
+                  ? 'bg-primary-100 border-primary-500 scale-110'
+                  : 'bg-gray-100 border-transparent'
+              }`}
             >
-              {({ pressed }) => (
-                <View
-                  style={[
-                    styles.moodButton,
-                    {
-                      backgroundColor: isSelected
-                        ? colors.secondaryContainer
-                        : colors.surfaceContainerHigh,
-                      borderColor: isSelected ? colors.secondary : 'transparent',
-                      borderWidth: isSelected ? 2 : 0,
-                      borderRadius: shape.large, // 16dp
-                    },
-                  ]}
-                >
-                  {/* MD3 State layer */}
-                  {pressed && (
-                    <View
-                      style={[
-                        styles.stateLayer,
-                        {
-                          backgroundColor: isSelected
-                            ? colors.onSecondaryContainer
-                            : colors.onSurface,
-                          opacity: stateLayerOpacity.pressed,
-                          borderRadius: shape.large,
-                        },
-                      ]}
-                    />
-                  )}
-                  <Text style={styles.emoji}>{mood.emoji}</Text>
-                </View>
-              )}
+              <Text className="text-3xl">{mood.emoji}</Text>
             </Pressable>
           );
         })}
-      </View>
+      </HStack>
       {selectedMood && (
-        <View
-          style={[
-            styles.selectedLabel,
-            {
-              backgroundColor: colors.secondaryContainer,
-              borderRadius: shape.small, // 8dp
-            },
-          ]}
-        >
-          <Text style={[typography.labelSmall, { color: colors.onSecondaryContainer }]}>
+        <Box className="self-center mt-4 px-4 py-2 rounded-full bg-primary-100">
+          <Text className="text-primary-700 font-medium">
             {MOODS.find(m => m.type === selectedMood)?.label || ''}
           </Text>
-        </View>
+        </Box>
       )}
-    </View>
+    </Card>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    maxWidth: 320,
-    padding: 16, // MD3 card padding
-  },
-  title: {
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  moodRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 12,
-  },
-  moodButton: {
-    width: 48, // MD3 touch target minimum
-    height: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-  },
-  stateLayer: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  emoji: {
-    fontSize: 22,
-  },
-  selectedLabel: {
-    alignSelf: 'center',
-    marginTop: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-  },
-});

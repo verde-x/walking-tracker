@@ -1,22 +1,18 @@
 import { useState, useEffect } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useWalkingContext } from '@/contexts/WalkingContext';
-import { useTheme } from '@/contexts/ThemeContext';
 import { WalkingStats } from '@/components/WalkingStats';
 import { MoodSelector } from '@/components/MoodSelector';
 import { MoodType } from '@/types/walking';
-
-// MD3 Button specs
-const BUTTON_HEIGHT = 40;
-const BUTTON_RADIUS = 20; // Full rounded (height / 2)
-const ICON_SIZE = 18;
+import { Box, Text, HStack, VStack, Icon, Button, ButtonText, ButtonIcon, Pressable } from '@/components/ui';
+import { CheckCircle, ChevronLeft, Check } from 'lucide-react-native';
 
 export default function ResultScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { currentRecord, saveWithMood } = useWalkingContext();
-  const { colors, typography, spacing, stateLayerOpacity } = useTheme();
   const [selectedMood, setSelectedMood] = useState<MoodType>();
 
   useEffect(() => {
@@ -40,158 +36,78 @@ export default function ResultScreen() {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* Header with success icon */}
-      <View style={[styles.header, { paddingTop: spacing.xxxl + 8 }]}>
-        <View
-          style={[
-            styles.successIcon,
-            { backgroundColor: colors.primaryContainer },
-          ]}
+    <Box className="flex-1 bg-gray-50" style={{ paddingTop: insets.top }}>
+      {/* Header */}
+      <HStack className="px-2 py-3 bg-white items-center shadow-sm">
+        <Pressable
+          className="p-2 rounded-full active:bg-gray-100"
+          onPress={() => router.replace('/' as never)}
         >
-          <Ionicons name="checkmark" size={32} color={colors.onPrimaryContainer} />
-        </View>
-        <Text
-          style={[
-            typography.headlineSmall,
-            { color: colors.onBackground, marginTop: spacing.md },
-          ]}
+          <Icon as={ChevronLeft} size="md" color="#374151" />
+        </Pressable>
+        <Text className="text-lg font-semibold text-gray-900 ml-2">ウォーキング完了</Text>
+      </HStack>
+
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 16 }}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Success Header */}
+        <VStack className="items-center py-8 px-6 bg-primary-100 mb-2" space="md">
+          <Box className="mb-2">
+            <Icon as={CheckCircle} size="2xl" color="#0077E6" />
+          </Box>
+          <Text className="text-xl font-semibold text-primary-900">
+            お疲れさまでした！
+          </Text>
+          <Text className="text-primary-700 opacity-80">
+            ウォーキングが完了しました
+          </Text>
+        </VStack>
+
+        {/* Stats */}
+        <Box className="px-4 py-4">
+          <Text className="text-base font-semibold text-gray-900 mb-3 ml-1">
+            記録
+          </Text>
+          <WalkingStats
+            elapsedTime={currentRecord.duration || 0}
+            distance={currentRecord.distance || 0}
+          />
+        </Box>
+
+        {/* Mood Selector */}
+        <Box className="px-4 py-2">
+          <Text className="text-base font-semibold text-gray-900 mb-3 ml-1">
+            気分を記録
+          </Text>
+          <MoodSelector selectedMood={selectedMood} onSelect={setSelectedMood} />
+        </Box>
+      </ScrollView>
+
+      {/* Action Buttons */}
+      <HStack
+        className="px-4 pt-4 bg-white justify-end shadow-lg"
+        space="md"
+        style={{ paddingBottom: insets.bottom + 16 }}
+      >
+        <Button
+          action="secondary"
+          variant="outline"
+          onPress={handleSkip}
+          className="min-w-24"
         >
-          お疲れさまでした！
-        </Text>
-        <Text
-          style={[
-            typography.bodyMedium,
-            { color: colors.onSurfaceVariant, marginTop: spacing.xs },
-          ]}
+          <ButtonText>スキップ</ButtonText>
+        </Button>
+        <Button
+          action="primary"
+          onPress={handleSave}
+          className="min-w-24"
         >
-          ウォーキングが完了しました
-        </Text>
-      </View>
-
-      {/* Stats and Mood */}
-      <View style={styles.content}>
-        <WalkingStats
-          elapsedTime={currentRecord.duration || 0}
-          distance={currentRecord.distance || 0}
-        />
-
-        <MoodSelector selectedMood={selectedMood} onSelect={setSelectedMood} />
-      </View>
-
-      {/* Action Buttons - MD3 inline style */}
-      <View style={[styles.footer, { paddingBottom: spacing.xxxl }]}>
-        <View style={styles.buttonRow}>
-          {/* MD3 Text Button (tertiary action) */}
-          <Pressable
-            onPress={handleSkip}
-            accessible={true}
-            accessibilityLabel="スキップ"
-            accessibilityRole="button"
-          >
-            {({ pressed }) => (
-              <View style={styles.textButton}>
-                {pressed && (
-                  <View
-                    style={[
-                      styles.stateLayer,
-                      { backgroundColor: colors.primary, opacity: stateLayerOpacity.pressed },
-                    ]}
-                  />
-                )}
-                <Text style={[typography.labelLarge, { color: colors.primary }]}>
-                  スキップ
-                </Text>
-              </View>
-            )}
-          </Pressable>
-
-          {/* MD3 Filled Button (primary action) */}
-          <Pressable
-            onPress={handleSave}
-            accessible={true}
-            accessibilityLabel="保存"
-            accessibilityRole="button"
-          >
-            {({ pressed }) => (
-              <View
-                style={[
-                  styles.filledButton,
-                  { backgroundColor: colors.primary },
-                ]}
-              >
-                {pressed && (
-                  <View
-                    style={[
-                      styles.stateLayer,
-                      { backgroundColor: colors.onPrimary, opacity: stateLayerOpacity.pressed },
-                    ]}
-                  />
-                )}
-                <Ionicons name="checkmark" size={ICON_SIZE} color={colors.onPrimary} />
-                <Text style={[typography.labelLarge, { color: colors.onPrimary }]}>
-                  保存
-                </Text>
-              </View>
-            )}
-          </Pressable>
-        </View>
-      </View>
-    </View>
+          <ButtonIcon as={Check} />
+          <ButtonText>保存</ButtonText>
+        </Button>
+      </HStack>
+    </Box>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    alignItems: 'center',
-    paddingHorizontal: 24,
-  },
-  successIcon: {
-    width: 64,
-    height: 64,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    gap: 16,
-  },
-  footer: {
-    paddingHorizontal: 24,
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    gap: 8,
-  },
-  filledButton: {
-    height: BUTTON_HEIGHT,
-    borderRadius: BUTTON_RADIUS,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingLeft: 16, // MD3: with icon
-    paddingRight: 24,
-    gap: 8,
-    overflow: 'hidden',
-  },
-  textButton: {
-    height: BUTTON_HEIGHT,
-    borderRadius: BUTTON_RADIUS,
-    paddingHorizontal: 12, // MD3: text button padding
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-  },
-  stateLayer: {
-    ...StyleSheet.absoluteFillObject,
-  },
-});

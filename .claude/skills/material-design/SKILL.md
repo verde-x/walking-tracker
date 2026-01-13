@@ -1,455 +1,213 @@
 ---
 name: material-design
-description: Create modern, beautiful UIs following Google Material Design 3 (Material You) guidelines for React Native/Expo apps. Use when designing components, implementing themes, choosing colors, working with typography, animations, or creating accessible mobile interfaces with Material Design aesthetics.
+description: Material Design 3 (Material You) コンポーネントガイドライン。React Native/Expoアプリ向けのUI実装時に使用。ボタン、カード、FAB、テキストフィールド、ナビゲーション等のコンポーネント設計に対応。
+allowed_urls:
+  - https://m3.material.io/*
+  - https://fonts.google.com/icons*
 ---
 
-# Material Design for React Native/Expo
+# Material Design 3 コンポーネントガイド
 
-This skill helps you create beautiful, modern mobile applications following Google's Material Design 3 (Material You) principles in React Native and Expo projects.
+Material Design 3 は30以上のUIコンポーネントを提供します。このスキルはReact Native/Expo向けの実装ガイドラインです。
 
-## When to Use This Skill
+公式ドキュメント: https://m3.material.io/components
 
-Use this skill when:
-- Creating new UI components following Material Design guidelines
-- Implementing Material Design color systems and theming
-- Setting up typography following Material Design type scale
-- Designing layout and spacing based on Material Design grid system
-- Adding elevation, shadows, and surface styling
-- Implementing Material Design motion and animations
-- Creating accessible, touch-friendly interfaces
-- Designing navigation patterns (bottom tabs, navigation drawers, etc.)
-- Working with Material Design icons and iconography
+---
 
-## Core Material Design 3 Principles
+## コンポーネント一覧
 
-### 1. Material You (Personalization)
-- Dynamic color generation from user preferences
-- Adaptive theming with light/dark mode support
-- Tonal palettes for cohesive color systems
+### アクション
 
-### 2. Design Tokens
-- Color roles (primary, secondary, tertiary, surface, etc.)
-- Elevation through shadow and tonal surfaces
-- State layers for interaction feedback
-- Shape system (rounded corners, pill shapes)
+| コンポーネント | 説明 |
+|----------------|------|
+| **Common buttons** | Elevated, Filled, Filled tonal, Outlined, Text |
+| **FAB** | Small, Regular, Large, Extended |
+| **Icon buttons** | Standard, Filled, Filled tonal, Outlined |
+| **Segmented buttons** | 複数選択肢から選ぶボタングループ |
 
-### 3. Components
-- Follow Material Design component specifications
-- Consistent interaction patterns
-- Accessibility-first approach
+### コミュニケーション
 
-## Material Design 3 Color System
+| コンポーネント | 説明 |
+|----------------|------|
+| **Badges** | 通知数などの小さなインジケーター |
+| **Progress indicators** | Linear, Circular（確定/不確定） |
+| **Snackbar** | 一時的なフィードバックメッセージ |
 
-### Color Roles
+### コンテインメント
 
-```typescript
-// Material Design 3 Color Scheme
-interface MaterialColors {
-  // Primary colors
-  primary: string;           // Main brand color
-  onPrimary: string;         // Text/icons on primary
-  primaryContainer: string;  // Less prominent primary
-  onPrimaryContainer: string;
+| コンポーネント | 説明 |
+|----------------|------|
+| **Bottom sheets** | Standard, Modal |
+| **Cards** | Elevated, Filled, Outlined |
+| **Dialogs** | Basic, Full-screen |
+| **Dividers** | コンテンツの区切り線 |
+| **Lists** | 1行、2行、3行リスト |
+| **Side sheets** | サイドパネル |
 
-  // Secondary colors
-  secondary: string;
-  onSecondary: string;
-  secondaryContainer: string;
-  onSecondaryContainer: string;
+### ナビゲーション
 
-  // Tertiary colors
-  tertiary: string;
-  onTertiary: string;
-  tertiaryContainer: string;
-  onTertiaryContainer: string;
+| コンポーネント | 説明 |
+|----------------|------|
+| **Bottom app bar** | 下部アクションバー |
+| **Navigation bar** | 下部タブナビゲーション |
+| **Navigation drawer** | サイドメニュー |
+| **Navigation rail** | タブレット向けサイドナビ |
+| **Tabs** | Primary, Secondary タブ |
+| **Top app bar** | 上部アプリバー |
 
-  // Error colors
-  error: string;
-  onError: string;
-  errorContainer: string;
-  onErrorContainer: string;
+### セレクション
 
-  // Surface colors
-  surface: string;           // Background
-  onSurface: string;         // Text on background
-  surfaceVariant: string;    // Alternative surface
-  onSurfaceVariant: string;
+| コンポーネント | 説明 |
+|----------------|------|
+| **Checkbox** | 複数選択 |
+| **Chips** | Assist, Filter, Input, Suggestion |
+| **Date pickers** | 日付選択 |
+| **Menus** | ドロップダウンメニュー |
+| **Radio button** | 単一選択 |
+| **Sliders** | Continuous, Discrete, Centered, Range |
+| **Switch** | オン/オフ切替 |
+| **Time pickers** | 時刻選択 |
 
-  // Outline
-  outline: string;
-  outlineVariant: string;
+### テキスト入力
 
-  // Other
-  background: string;
-  onBackground: string;
-  inverseSurface: string;
-  inverseOnSurface: string;
-  inversePrimary: string;
-  shadow: string;
-  scrim: string;
-}
-```
+| コンポーネント | 説明 |
+|----------------|------|
+| **Text fields** | Filled, Outlined |
+| **Search** | 検索バー |
 
-### Example Color Palette (Light Theme)
+---
 
-```typescript
-const lightColors: MaterialColors = {
-  primary: '#6750A4',
-  onPrimary: '#FFFFFF',
-  primaryContainer: '#EADDFF',
-  onPrimaryContainer: '#21005E',
+## ボタン (Buttons)
 
-  secondary: '#625B71',
-  onSecondary: '#FFFFFF',
-  secondaryContainer: '#E8DEF8',
-  onSecondaryContainer: '#1E192B',
+### タイプと使い分け
 
-  tertiary: '#7D5260',
-  onTertiary: '#FFFFFF',
-  tertiaryContainer: '#FFD8E4',
-  onTertiaryContainer: '#370B1E',
+| タイプ | 用途 | 強調度 |
+|--------|------|--------|
+| **Filled** | 最も重要なアクション（CTA） | 最高 |
+| **Filled tonal** | 重要だが主要ではないアクション | 高 |
+| **Elevated** | Filledより控えめ、影付き | 中高 |
+| **Outlined** | 代替アクション | 中 |
+| **Text** | 最も控えめなアクション | 低 |
 
-  error: '#B3261E',
-  onError: '#FFFFFF',
-  errorContainer: '#F9DEDC',
-  onErrorContainer: '#410E0B',
+### 仕様
 
-  surface: '#FEF7FF',
-  onSurface: '#1D1B20',
-  surfaceVariant: '#E7E0EC',
-  onSurfaceVariant: '#49454E',
+- 高さ: 40dp
+- パディング: 左右24dp（アイコン付きは16dp/24dp）
+- 角丸: 20dp (full)
+- テキスト: Sentence case（ALL CAPSではない）
+- 最小タッチターゲット: 48dp
 
-  outline: '#79747E',
-  outlineVariant: '#C4C7C5',
+### React Native実装
 
-  background: '#FEF7FF',
-  onBackground: '#1D1B20',
-  inverseSurface: '#322F35',
-  inverseOnSurface: '#F5EFF7',
-  inversePrimary: '#D0BCFF',
-  shadow: '#000000',
-  scrim: '#000000',
-};
-```
-
-### Example Color Palette (Dark Theme)
-
-```typescript
-const darkColors: MaterialColors = {
-  primary: '#D0BCFF',
-  onPrimary: '#381E72',
-  primaryContainer: '#4F378B',
-  onPrimaryContainer: '#EADDFF',
-
-  secondary: '#CCC2DC',
-  onSecondary: '#332D41',
-  secondaryContainer: '#4A4458',
-  onSecondaryContainer: '#E8DEF8',
-
-  tertiary: '#EFB8C8',
-  onTertiary: '#4A2532',
-  tertiaryContainer: '#633B48',
-  onTertiaryContainer: '#FFD8E4',
-
-  error: '#F2B8B5',
-  onError: '#601410',
-  errorContainer: '#8C1D18',
-  onErrorContainer: '#F9DEDC',
-
-  surface: '#141218',
-  onSurface: '#E6E0E9',
-  surfaceVariant: '#49454F',
-  onSurfaceVariant: '#CAC4D0',
-
-  outline: '#948F99',
-  outlineVariant: '#49454E',
-
-  background: '#141218',
-  onBackground: '#E6E0E9',
-  inverseSurface: '#E6E0E9',
-  inverseOnSurface: '#322F35',
-  inversePrimary: '#6750A4',
-  shadow: '#000000',
-  scrim: '#000000',
-};
-```
-
-## Typography System
-
-Material Design uses a type scale with predefined text styles:
-
-```typescript
-interface MaterialTypography {
-  displayLarge: TextStyle;
-  displayMedium: TextStyle;
-  displaySmall: TextStyle;
-
-  headlineLarge: TextStyle;
-  headlineMedium: TextStyle;
-  headlineSmall: TextStyle;
-
-  titleLarge: TextStyle;
-  titleMedium: TextStyle;
-  titleSmall: TextStyle;
-
-  bodyLarge: TextStyle;
-  bodyMedium: TextStyle;
-  bodySmall: TextStyle;
-
-  labelLarge: TextStyle;
-  labelMedium: TextStyle;
-  labelSmall: TextStyle;
-}
-
-// Example implementation
-const typography: MaterialTypography = {
-  displayLarge: {
-    fontFamily: 'System',
-    fontSize: 57,
-    lineHeight: 64,
-    fontWeight: '400',
-    letterSpacing: -0.25,
-  },
-  displayMedium: {
-    fontFamily: 'System',
-    fontSize: 45,
-    lineHeight: 52,
-    fontWeight: '400',
-    letterSpacing: 0,
-  },
-  displaySmall: {
-    fontFamily: 'System',
-    fontSize: 36,
-    lineHeight: 44,
-    fontWeight: '400',
-    letterSpacing: 0,
-  },
-
-  headlineLarge: {
-    fontFamily: 'System',
-    fontSize: 32,
-    lineHeight: 40,
-    fontWeight: '400',
-    letterSpacing: 0,
-  },
-  headlineMedium: {
-    fontFamily: 'System',
-    fontSize: 28,
-    lineHeight: 36,
-    fontWeight: '400',
-    letterSpacing: 0,
-  },
-  headlineSmall: {
-    fontFamily: 'System',
-    fontSize: 24,
-    lineHeight: 32,
-    fontWeight: '400',
-    letterSpacing: 0,
-  },
-
-  titleLarge: {
-    fontFamily: 'System',
-    fontSize: 22,
-    lineHeight: 28,
-    fontWeight: '400',
-    letterSpacing: 0,
-  },
-  titleMedium: {
-    fontFamily: 'System',
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: '500',
-    letterSpacing: 0.15,
-  },
-  titleSmall: {
-    fontFamily: 'System',
-    fontSize: 14,
-    lineHeight: 20,
-    fontWeight: '500',
-    letterSpacing: 0.1,
-  },
-
-  bodyLarge: {
-    fontFamily: 'System',
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: '400',
-    letterSpacing: 0.5,
-  },
-  bodyMedium: {
-    fontFamily: 'System',
-    fontSize: 14,
-    lineHeight: 20,
-    fontWeight: '400',
-    letterSpacing: 0.25,
-  },
-  bodySmall: {
-    fontFamily: 'System',
-    fontSize: 12,
-    lineHeight: 16,
-    fontWeight: '400',
-    letterSpacing: 0.4,
-  },
-
-  labelLarge: {
-    fontFamily: 'System',
-    fontSize: 14,
-    lineHeight: 20,
-    fontWeight: '500',
-    letterSpacing: 0.1,
-  },
-  labelMedium: {
-    fontFamily: 'System',
-    fontSize: 12,
-    lineHeight: 16,
-    fontWeight: '500',
-    letterSpacing: 0.5,
-  },
-  labelSmall: {
-    fontFamily: 'System',
-    fontSize: 11,
-    lineHeight: 16,
-    fontWeight: '500',
-    letterSpacing: 0.5,
-  },
-};
-```
-
-## Spacing and Layout
-
-Material Design uses an 8dp grid system (8-point grid):
-
-```typescript
-const spacing = {
-  xs: 4,    // 0.5 units
-  sm: 8,    // 1 unit
-  md: 16,   // 2 units
-  lg: 24,   // 3 units
-  xl: 32,   // 4 units
-  xxl: 48,  // 6 units
-  xxxl: 64, // 8 units
-};
-
-// Common usage
-const styles = {
-  container: {
-    padding: spacing.md,  // 16
-    gap: spacing.sm,      // 8
-  },
-  header: {
-    marginBottom: spacing.lg, // 24
-  },
-};
-```
-
-## Elevation and Shadows
-
-Material Design 3 uses elevation levels (0-5):
-
-```typescript
-// Elevation shadows for Android
-const elevation = {
-  0: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0,
-    shadowRadius: 0,
-    elevation: 0,
-  },
-  1: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.18,
-    shadowRadius: 1.0,
-    elevation: 1,
-  },
-  2: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.20,
-    shadowRadius: 1.41,
-    elevation: 2,
-  },
-  3: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-  },
-  4: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
-  },
-  5: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-};
-```
-
-## Shape System
-
-Material Design 3 uses rounded corners with specific values:
-
-```typescript
-const shape = {
-  none: 0,
-  extraSmall: 4,   // Small components
-  small: 8,        // Buttons, chips
-  medium: 12,      // Cards, dialogs
-  large: 16,       // Bottom sheets
-  extraLarge: 28,  // Featured content
-  full: 9999,      // Pills, FABs
-};
-```
-
-## Component Examples
-
-### Filled Button (Primary)
-
-```typescript
+```tsx
 import { Pressable, Text, StyleSheet } from 'react-native';
-import { useColorScheme } from 'react-native';
 
-interface ButtonProps {
-  onPress: () => void;
-  label: string;
-  disabled?: boolean;
-}
-
-export function FilledButton({ onPress, label, disabled = false }: ButtonProps) {
-  const colorScheme = useColorScheme();
-  const colors = colorScheme === 'dark' ? darkColors : lightColors;
+// Filled Button
+export function FilledButton({ label, onPress, disabled }) {
+  const colors = useThemeColors();
 
   return (
     <Pressable
       onPress={onPress}
       disabled={disabled}
+      accessibilityRole="button"
       style={({ pressed }) => [
         styles.button,
         {
           backgroundColor: disabled
-            ? colors.onSurface + '1F' // 12% opacity
+            ? `${colors.onSurface}1F`
             : colors.primary,
-          opacity: pressed ? 0.9 : 1,
+          opacity: pressed ? 0.88 : 1,
         },
       ]}
     >
-      <Text
-        style={[
-          styles.label,
-          {
-            color: disabled ? colors.onSurface + '61' : colors.onPrimary, // 38% opacity
-          },
-        ]}
-      >
+      <Text style={[
+        styles.label,
+        { color: disabled ? `${colors.onSurface}61` : colors.onPrimary }
+      ]}>
+        {label}
+      </Text>
+    </Pressable>
+  );
+}
+
+// Filled Tonal Button
+export function FilledTonalButton({ label, onPress, disabled }) {
+  const colors = useThemeColors();
+
+  return (
+    <Pressable
+      onPress={onPress}
+      disabled={disabled}
+      accessibilityRole="button"
+      style={({ pressed }) => [
+        styles.button,
+        {
+          backgroundColor: disabled
+            ? `${colors.onSurface}1F`
+            : colors.secondaryContainer,
+          opacity: pressed ? 0.88 : 1,
+        },
+      ]}
+    >
+      <Text style={[
+        styles.label,
+        { color: disabled ? `${colors.onSurface}61` : colors.onSecondaryContainer }
+      ]}>
+        {label}
+      </Text>
+    </Pressable>
+  );
+}
+
+// Outlined Button
+export function OutlinedButton({ label, onPress, disabled }) {
+  const colors = useThemeColors();
+
+  return (
+    <Pressable
+      onPress={onPress}
+      disabled={disabled}
+      accessibilityRole="button"
+      style={({ pressed }) => [
+        styles.button,
+        styles.outlined,
+        {
+          borderColor: disabled ? `${colors.onSurface}1F` : colors.outline,
+          backgroundColor: pressed ? `${colors.primary}14` : 'transparent',
+        },
+      ]}
+    >
+      <Text style={[
+        styles.label,
+        { color: disabled ? `${colors.onSurface}61` : colors.primary }
+      ]}>
+        {label}
+      </Text>
+    </Pressable>
+  );
+}
+
+// Text Button
+export function TextButton({ label, onPress, disabled }) {
+  const colors = useThemeColors();
+
+  return (
+    <Pressable
+      onPress={onPress}
+      disabled={disabled}
+      accessibilityRole="button"
+      style={({ pressed }) => [
+        styles.textButton,
+        {
+          backgroundColor: pressed ? `${colors.primary}14` : 'transparent',
+        },
+      ]}
+    >
+      <Text style={[
+        styles.label,
+        { color: disabled ? `${colors.onSurface}61` : colors.primary }
+      ]}>
         {label}
       </Text>
     </Pressable>
@@ -460,176 +218,246 @@ const styles = StyleSheet.create({
   button: {
     height: 40,
     paddingHorizontal: 24,
-    borderRadius: 20, // shape.full
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    // elevation.1 (from elevation system)
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.18,
-    shadowRadius: 1.0,
-    elevation: 1,
+    flexDirection: 'row',
+    gap: 8,
+  },
+  outlined: {
+    borderWidth: 1,
+  },
+  textButton: {
+    height: 40,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   label: {
     fontSize: 14,
-    lineHeight: 20,
     fontWeight: '500',
     letterSpacing: 0.1,
   },
 });
 ```
 
-### Material Card
+---
 
-```typescript
-import { View, Text, StyleSheet } from 'react-native';
-import { useColorScheme } from 'react-native';
+## FAB (Floating Action Button)
 
-interface CardProps {
-  title: string;
-  subtitle?: string;
-  children?: React.ReactNode;
-  elevated?: boolean;
-}
+画面で最も重要なアクションを表現します。
 
-export function MaterialCard({ title, subtitle, children, elevated = false }: CardProps) {
-  const colorScheme = useColorScheme();
-  const colors = colorScheme === 'dark' ? darkColors : lightColors;
+### タイプ
 
-  return (
-    <View
-      style={[
-        styles.card,
-        {
-          backgroundColor: colors.surface,
-        },
-        elevated && elevation[1],
-      ]}
-    >
-      <View style={styles.header}>
-        <Text style={[styles.title, { color: colors.onSurface }]}>
-          {title}
-        </Text>
-        {subtitle && (
-          <Text style={[styles.subtitle, { color: colors.onSurfaceVariant }]}>
-            {subtitle}
-          </Text>
-        )}
-      </View>
-      {children && <View style={styles.content}>{children}</View>}
-    </View>
-  );
-}
+| タイプ | サイズ | 用途 |
+|--------|--------|------|
+| **Small** | 40dp | 補助的なFAB |
+| **Regular** | 56dp | 標準的なFAB |
+| **Large** | 96dp | 大きな画面向け |
+| **Extended** | 56dp高さ | テキスト付きFAB |
 
-const styles = StyleSheet.create({
-  card: {
-    borderRadius: 12, // shape.medium
-    padding: 16,
-    borderWidth: 1,
-    borderColor: 'transparent',
-  },
-  header: {
-    marginBottom: 8,
-  },
-  title: {
-    fontSize: 22,
-    lineHeight: 28,
-    fontWeight: '400',
-  },
-  subtitle: {
-    fontSize: 14,
-    lineHeight: 20,
-    fontWeight: '400',
-    marginTop: 4,
-  },
-  content: {
-    marginTop: 8,
-  },
-});
-```
+### 仕様
 
-### Floating Action Button (FAB)
+- 角丸: 16dp（Large: 28dp）
+- エレベーション: Level 3
+- 色: primaryContainer / onPrimaryContainer
 
-```typescript
-import { Pressable, StyleSheet } from 'react-native';
-import { useColorScheme } from 'react-native';
+### React Native実装
+
+```tsx
+import { Pressable, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-interface FABProps {
-  onPress: () => void;
-  icon: keyof typeof Ionicons.glyphMap;
-  size?: 'small' | 'medium' | 'large';
-}
+export function FAB({ icon, label, size = 'regular', onPress }) {
+  const colors = useThemeColors();
 
-export function FAB({ onPress, icon, size = 'medium' }: FABProps) {
-  const colorScheme = useColorScheme();
-  const colors = colorScheme === 'dark' ? darkColors : lightColors;
-
-  const sizeConfig = {
-    small: { container: 40, icon: 24 },
-    medium: { container: 56, icon: 24 },
-    large: { container: 96, icon: 36 },
+  const sizeStyles = {
+    small: { width: 40, height: 40, iconSize: 24, radius: 12 },
+    regular: { width: 56, height: 56, iconSize: 24, radius: 16 },
+    large: { width: 96, height: 96, iconSize: 36, radius: 28 },
   };
 
-  const config = sizeConfig[size];
+  const config = sizeStyles[size];
+  const isExtended = !!label;
 
   return (
     <Pressable
       onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={label || 'アクション'}
       style={({ pressed }) => [
-        styles.fab,
-        {
-          width: config.container,
-          height: config.container,
-          backgroundColor: colors.primaryContainer,
-          opacity: pressed ? 0.9 : 1,
-        },
+        isExtended ? styles.extendedFab : styles.fab,
         elevation[3],
+        {
+          width: isExtended ? undefined : config.width,
+          height: isExtended ? 56 : config.height,
+          borderRadius: isExtended ? 16 : config.radius,
+          backgroundColor: colors.primaryContainer,
+          opacity: pressed ? 0.88 : 1,
+        },
       ]}
     >
       <Ionicons
         name={icon}
-        size={config.icon}
+        size={config.iconSize}
         color={colors.onPrimaryContainer}
       />
+      {label && (
+        <Text style={[styles.fabLabel, { color: colors.onPrimaryContainer }]}>
+          {label}
+        </Text>
+      )}
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   fab: {
-    borderRadius: 9999, // shape.full
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  extendedFab: {
+    height: 56,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  fabLabel: {
+    fontSize: 14,
+    fontWeight: '500',
+    letterSpacing: 0.1,
   },
 });
 ```
 
-### Text Input (Outlined)
+---
 
-```typescript
-import { TextInput, View, Text, StyleSheet } from 'react-native';
-import { useState } from 'react';
-import { useColorScheme } from 'react-native';
+## カード (Cards)
 
-interface OutlinedTextFieldProps {
-  label: string;
-  value: string;
-  onChangeText: (text: string) => void;
-  error?: string;
-  placeholder?: string;
+関連する情報をグループ化するコンテナです。
+
+### タイプ
+
+| タイプ | 特徴 |
+|--------|------|
+| **Elevated** | 影付き、surfaceContainerLow背景 |
+| **Filled** | 影なし、surfaceContainerHighest背景 |
+| **Outlined** | 影なし、outline境界線 |
+
+### 仕様
+
+- 角丸: 12dp (medium)
+- パディング: 16dp
+- エレベーション: Level 1（Elevatedのみ）
+
+### React Native実装
+
+```tsx
+export function ElevatedCard({ children, onPress }) {
+  const colors = useThemeColors();
+
+  const Container = onPress ? Pressable : View;
+
+  return (
+    <Container
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.card,
+        elevation[1],
+        {
+          backgroundColor: colors.surfaceContainerLow,
+          opacity: pressed ? 0.88 : 1,
+        },
+      ]}
+    >
+      {children}
+    </Container>
+  );
 }
+
+export function FilledCard({ children, onPress }) {
+  const colors = useThemeColors();
+
+  return (
+    <View style={[
+      styles.card,
+      { backgroundColor: colors.surfaceContainerHighest }
+    ]}>
+      {children}
+    </View>
+  );
+}
+
+export function OutlinedCard({ children, onPress }) {
+  const colors = useThemeColors();
+
+  return (
+    <View style={[
+      styles.card,
+      styles.outlinedCard,
+      {
+        backgroundColor: colors.surface,
+        borderColor: colors.outlineVariant,
+      }
+    ]}>
+      {children}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  card: {
+    borderRadius: 12,
+    padding: 16,
+  },
+  outlinedCard: {
+    borderWidth: 1,
+  },
+});
+```
+
+---
+
+## テキストフィールド (Text Fields)
+
+### タイプ
+
+| タイプ | 特徴 | 使用場面 |
+|--------|------|----------|
+| **Filled** | 下線のみ、上部角丸 | 視覚的に目立つ場所 |
+| **Outlined** | 全周の境界線 | フォームなど多数配置する場所 |
+
+### 仕様
+
+- 高さ: 56dp
+- 角丸: Filled=上部4dp / Outlined=4dp全周
+- ラベル: フローティングラベル（フォーカス時に上に移動）
+- サポートテキスト: 入力フィールド下に表示
+
+### 状態
+
+- Default / Focused / Error / Disabled
+- フォーカス時: primary色のボーダー/ラベル
+- エラー時: error色のボーダー/ラベル/サポートテキスト
+
+### React Native実装
+
+```tsx
+import { useState } from 'react';
+import { View, TextInput, Text, StyleSheet, Animated } from 'react-native';
 
 export function OutlinedTextField({
   label,
   value,
   onChangeText,
   error,
+  supportingText,
   placeholder,
-}: OutlinedTextFieldProps) {
+}) {
   const [isFocused, setIsFocused] = useState(false);
-  const colorScheme = useColorScheme();
-  const colors = colorScheme === 'dark' ? darkColors : lightColors;
+  const colors = useThemeColors();
 
   const borderColor = error
     ? colors.error
@@ -655,18 +483,78 @@ export function OutlinedTextField({
         onBlur={() => setIsFocused(false)}
         placeholder={placeholder}
         placeholderTextColor={colors.onSurfaceVariant}
+        accessibilityLabel={label}
         style={[
           styles.input,
           {
             borderColor,
+            borderWidth: isFocused ? 2 : 1,
             color: colors.onSurface,
-            backgroundColor: colors.surface,
           },
         ]}
       />
-      {error && (
-        <Text style={[styles.supportingText, { color: colors.error }]}>
-          {error}
+      {(supportingText || error) && (
+        <Text style={[
+          styles.supportingText,
+          { color: error ? colors.error : colors.onSurfaceVariant }
+        ]}>
+          {error || supportingText}
+        </Text>
+      )}
+    </View>
+  );
+}
+
+export function FilledTextField({
+  label,
+  value,
+  onChangeText,
+  error,
+  supportingText,
+}) {
+  const [isFocused, setIsFocused] = useState(false);
+  const colors = useThemeColors();
+
+  const indicatorColor = error
+    ? colors.error
+    : isFocused
+    ? colors.primary
+    : colors.onSurfaceVariant;
+
+  return (
+    <View style={styles.container}>
+      <View style={[
+        styles.filledContainer,
+        { backgroundColor: colors.surfaceContainerHighest }
+      ]}>
+        <Text style={[
+          styles.filledLabel,
+          { color: error ? colors.error : colors.onSurfaceVariant }
+        ]}>
+          {label}
+        </Text>
+        <TextInput
+          value={value}
+          onChangeText={onChangeText}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          accessibilityLabel={label}
+          style={[styles.filledInput, { color: colors.onSurface }]}
+        />
+        <View style={[
+          styles.indicator,
+          {
+            backgroundColor: indicatorColor,
+            height: isFocused ? 2 : 1,
+          }
+        ]} />
+      </View>
+      {(supportingText || error) && (
+        <Text style={[
+          styles.supportingText,
+          { color: error ? colors.error : colors.onSurfaceVariant }
+        ]}>
+          {error || supportingText}
         </Text>
       )}
     </View>
@@ -675,160 +563,519 @@ export function OutlinedTextField({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 8,
+    gap: 4,
   },
   label: {
     fontSize: 12,
-    lineHeight: 16,
-    fontWeight: '400',
     marginBottom: 4,
+    marginLeft: 16,
   },
   input: {
     height: 56,
-    borderWidth: 1,
-    borderRadius: 4, // shape.extraSmall
+    borderRadius: 4,
     paddingHorizontal: 16,
     fontSize: 16,
-    lineHeight: 24,
+  },
+  filledContainer: {
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    paddingTop: 8,
+    paddingHorizontal: 16,
+  },
+  filledLabel: {
+    fontSize: 12,
+  },
+  filledInput: {
+    height: 40,
+    fontSize: 16,
+    paddingVertical: 0,
+  },
+  indicator: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   supportingText: {
     fontSize: 12,
-    lineHeight: 16,
-    marginTop: 4,
-    marginHorizontal: 16,
+    marginLeft: 16,
   },
 });
 ```
 
-## State Layers (Interaction States)
+---
 
-Apply overlay colors for interaction states:
+## チップ (Chips)
 
-```typescript
-const stateLayerOpacity = {
-  hover: 0.08,    // 8%
-  focus: 0.12,    // 12%
-  pressed: 0.12,  // 12%
-  dragged: 0.16,  // 16%
-};
+コンテキスト内の選択肢やフィルターを表現します。
 
-// Usage example
-<Pressable
-  style={({ pressed }) => [
-    styles.surface,
-    {
-      backgroundColor: pressed
-        ? `${colors.primary}${Math.round(stateLayerOpacity.pressed * 255).toString(16)}`
-        : colors.surface,
-    },
-  ]}
->
-  {/* Content */}
-</Pressable>
+### タイプ
+
+| タイプ | 用途 |
+|--------|------|
+| **Assist** | スマートアクション提案 |
+| **Filter** | コンテンツのフィルタリング |
+| **Input** | ユーザー入力の表示（タグなど） |
+| **Suggestion** | 入力候補の提案 |
+
+### 仕様
+
+- 高さ: 32dp
+- 角丸: 8dp
+- パディング: 左右16dp（アイコン付きは8dp/16dp）
+
+### React Native実装
+
+```tsx
+export function FilterChip({ label, selected, onPress }) {
+  const colors = useThemeColors();
+
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityState={{ selected }}
+      style={({ pressed }) => [
+        styles.chip,
+        {
+          backgroundColor: selected
+            ? colors.secondaryContainer
+            : 'transparent',
+          borderColor: selected
+            ? colors.secondaryContainer
+            : colors.outline,
+          opacity: pressed ? 0.88 : 1,
+        },
+      ]}
+    >
+      {selected && (
+        <Ionicons
+          name="checkmark"
+          size={18}
+          color={colors.onSecondaryContainer}
+        />
+      )}
+      <Text style={[
+        styles.chipLabel,
+        { color: selected ? colors.onSecondaryContainer : colors.onSurfaceVariant }
+      ]}>
+        {label}
+      </Text>
+    </Pressable>
+  );
+}
+
+export function InputChip({ label, onRemove }) {
+  const colors = useThemeColors();
+
+  return (
+    <View style={[
+      styles.chip,
+      { borderColor: colors.outline }
+    ]}>
+      <Text style={[styles.chipLabel, { color: colors.onSurfaceVariant }]}>
+        {label}
+      </Text>
+      <Pressable onPress={onRemove} hitSlop={8}>
+        <Ionicons name="close" size={18} color={colors.onSurfaceVariant} />
+      </Pressable>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  chip: {
+    height: 32,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  chipLabel: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+});
 ```
 
-## Motion and Animation
+---
 
-Material Design uses standard easing curves:
+## ナビゲーションバー (Navigation Bar)
 
-```typescript
-import { Easing } from 'react-native-reanimated';
+画面下部のタブナビゲーションです。
 
-const materialEasing = {
-  // Standard: Most common, use for simple transitions
-  standard: Easing.bezier(0.2, 0.0, 0, 1.0),
+### 仕様
 
-  // Emphasized: Use for important or large transitions
-  emphasized: Easing.bezier(0.2, 0.0, 0, 1.0),
+- 高さ: 80dp
+- アイテム数: 3〜5個
+- アイコン: 24dp
+- アクティブ状態: primaryContainer背景のピル形状
 
-  // Decelerated: Entering elements
-  decelerated: Easing.bezier(0.0, 0.0, 0, 1.0),
+### React Native実装
 
-  // Accelerated: Exiting elements
-  accelerated: Easing.bezier(0.3, 0.0, 1.0, 1.0),
+```tsx
+export function NavigationBar({ items, activeIndex, onSelect }) {
+  const colors = useThemeColors();
+
+  return (
+    <View style={[
+      styles.navBar,
+      elevation[2],
+      { backgroundColor: colors.surfaceContainer }
+    ]}>
+      {items.map((item, index) => {
+        const isActive = index === activeIndex;
+        return (
+          <Pressable
+            key={item.key}
+            onPress={() => onSelect(index)}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: isActive }}
+            style={styles.navItem}
+          >
+            <View style={[
+              styles.navIndicator,
+              {
+                backgroundColor: isActive
+                  ? colors.secondaryContainer
+                  : 'transparent',
+              }
+            ]}>
+              <Ionicons
+                name={isActive ? item.iconActive : item.icon}
+                size={24}
+                color={isActive ? colors.onSecondaryContainer : colors.onSurfaceVariant}
+              />
+            </View>
+            <Text style={[
+              styles.navLabel,
+              {
+                color: isActive ? colors.onSurface : colors.onSurfaceVariant,
+                fontWeight: isActive ? '600' : '500',
+              }
+            ]}>
+              {item.label}
+            </Text>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  navBar: {
+    height: 80,
+    flexDirection: 'row',
+    paddingTop: 12,
+    paddingBottom: 16,
+  },
+  navItem: {
+    flex: 1,
+    alignItems: 'center',
+    gap: 4,
+  },
+  navIndicator: {
+    width: 64,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  navLabel: {
+    fontSize: 12,
+    letterSpacing: 0.5,
+  },
+});
+```
+
+---
+
+## スナックバー (Snackbar)
+
+一時的なフィードバックメッセージを表示します。
+
+### 仕様
+
+- 高さ: 48dp（1行）/ 68dp（2行）
+- 角丸: 4dp
+- 表示時間: 4〜10秒
+- エレベーション: Level 3
+- 位置: 画面下部（FABの上）
+
+### React Native実装
+
+```tsx
+export function Snackbar({ message, action, onAction, visible }) {
+  const colors = useThemeColors();
+
+  if (!visible) return null;
+
+  return (
+    <View style={[
+      styles.snackbar,
+      elevation[3],
+      { backgroundColor: colors.inverseSurface }
+    ]}>
+      <Text style={[styles.snackbarText, { color: colors.inverseOnSurface }]}>
+        {message}
+      </Text>
+      {action && (
+        <Pressable onPress={onAction}>
+          <Text style={[styles.snackbarAction, { color: colors.inversePrimary }]}>
+            {action}
+          </Text>
+        </Pressable>
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  snackbar: {
+    position: 'absolute',
+    bottom: 16,
+    left: 16,
+    right: 16,
+    minHeight: 48,
+    borderRadius: 4,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  snackbarText: {
+    fontSize: 14,
+    flex: 1,
+  },
+  snackbarAction: {
+    fontSize: 14,
+    fontWeight: '500',
+    marginLeft: 8,
+  },
+});
+```
+
+---
+
+## プログレスインジケーター (Progress Indicators)
+
+処理状況を示すインジケーターです。
+
+### タイプ
+
+| タイプ | 用途 |
+|--------|------|
+| **Linear** | 水平方向のプログレス |
+| **Circular** | 円形のプログレス |
+
+各タイプに確定（determinate）と不確定（indeterminate）があります。
+
+### 仕様（2024年更新）
+
+- Linear: 丸みのある端、トラックとの間にギャップ
+- ストップインジケーター付き
+- 波形（wavy）オプション
+
+### React Native実装
+
+```tsx
+import { useEffect } from 'react';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
+
+export function LinearProgress({ progress, indeterminate }) {
+  const colors = useThemeColors();
+  const translateX = useSharedValue(-100);
+
+  useEffect(() => {
+    if (indeterminate) {
+      translateX.value = withRepeat(
+        withTiming(100, { duration: 1500 }),
+        -1,
+        false
+      );
+    }
+  }, [indeterminate]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: `${translateX.value}%` }],
+  }));
+
+  return (
+    <View style={[styles.linearTrack, { backgroundColor: colors.surfaceContainerHighest }]}>
+      {indeterminate ? (
+        <Animated.View
+          style={[
+            styles.linearIndicator,
+            { backgroundColor: colors.primary, width: '30%' },
+            animatedStyle,
+          ]}
+        />
+      ) : (
+        <View
+          style={[
+            styles.linearIndicator,
+            { backgroundColor: colors.primary, width: `${progress * 100}%` }
+          ]}
+        />
+      )}
+    </View>
+  );
+}
+
+export function CircularProgress({ progress, indeterminate, size = 48 }) {
+  const colors = useThemeColors();
+  const rotation = useSharedValue(0);
+
+  useEffect(() => {
+    if (indeterminate) {
+      rotation.value = withRepeat(
+        withTiming(360, { duration: 1000 }),
+        -1,
+        false
+      );
+    }
+  }, [indeterminate]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${rotation.value}deg` }],
+  }));
+
+  // 簡易実装（ActivityIndicatorを使用）
+  return (
+    <ActivityIndicator
+      size={size > 36 ? 'large' : 'small'}
+      color={colors.primary}
+    />
+  );
+}
+
+const styles = StyleSheet.create({
+  linearTrack: {
+    height: 4,
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  linearIndicator: {
+    height: '100%',
+    borderRadius: 2,
+  },
+});
+```
+
+---
+
+## 共通ユーティリティ
+
+### テーマカラーフック
+
+```tsx
+import { useColorScheme } from 'react-native';
+
+// ライトテーマ
+const lightColors = {
+  primary: '#6750A4',
+  onPrimary: '#FFFFFF',
+  primaryContainer: '#EADDFF',
+  onPrimaryContainer: '#21005E',
+  secondary: '#625B71',
+  onSecondary: '#FFFFFF',
+  secondaryContainer: '#E8DEF8',
+  onSecondaryContainer: '#1E192B',
+  surface: '#FEF7FF',
+  onSurface: '#1D1B20',
+  surfaceContainerLowest: '#FFFFFF',
+  surfaceContainerLow: '#F7F2FA',
+  surfaceContainer: '#F3EDF7',
+  surfaceContainerHigh: '#ECE6F0',
+  surfaceContainerHighest: '#E6E0E9',
+  onSurfaceVariant: '#49454E',
+  outline: '#79747E',
+  outlineVariant: '#CAC4D0',
+  error: '#B3261E',
+  onError: '#FFFFFF',
+  inverseSurface: '#322F35',
+  inverseOnSurface: '#F5EFF7',
+  inversePrimary: '#D0BCFF',
 };
 
-// Standard durations
-const duration = {
-  short1: 50,   // Small simple transitions
-  short2: 100,  // Simple transitions
-  short3: 150,  // Simple transitions
-  short4: 200,  // Simple transitions
-  medium1: 250, // Medium transitions
-  medium2: 300, // Medium transitions
-  medium3: 350, // Medium transitions
-  medium4: 400, // Medium transitions
-  long1: 450,   // Large/complex transitions
-  long2: 500,   // Large/complex transitions
-  long3: 550,   // Large/complex transitions
-  long4: 600,   // Large/complex transitions
+// ダークテーマ
+const darkColors = {
+  primary: '#D0BCFF',
+  onPrimary: '#381E72',
+  primaryContainer: '#4F378B',
+  onPrimaryContainer: '#EADDFF',
+  secondary: '#CCC2DC',
+  onSecondary: '#332D41',
+  secondaryContainer: '#4A4458',
+  onSecondaryContainer: '#E8DEF8',
+  surface: '#141218',
+  onSurface: '#E6E0E9',
+  surfaceContainerLowest: '#0F0D13',
+  surfaceContainerLow: '#1D1B20',
+  surfaceContainer: '#211F26',
+  surfaceContainerHigh: '#2B2930',
+  surfaceContainerHighest: '#36343B',
+  onSurfaceVariant: '#CAC4D0',
+  outline: '#948F99',
+  outlineVariant: '#49454E',
+  error: '#F2B8B5',
+  onError: '#601410',
+  inverseSurface: '#E6E0E9',
+  inverseOnSurface: '#322F35',
+  inversePrimary: '#6750A4',
+};
+
+export function useThemeColors() {
+  const scheme = useColorScheme();
+  return scheme === 'dark' ? darkColors : lightColors;
+}
+```
+
+### エレベーション
+
+```tsx
+export const elevation = {
+  0: {},
+  1: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+    elevation: 1,
+  },
+  2: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.20,
+    shadowRadius: 1.41,
+    elevation: 2,
+  },
+  3: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+  },
 };
 ```
 
-## Accessibility Best Practices
+---
 
-1. **Touch Targets**: Minimum 48x48 dp
-2. **Color Contrast**: Follow WCAG 2.1 AA standards (4.5:1 for normal text)
-3. **Screen Readers**: Provide meaningful accessibility labels
-4. **Focus Indicators**: Clear visual feedback for focus states
+## 参考リソース
 
-```typescript
-// Example accessible button
-<Pressable
-  accessible={true}
-  accessibilityLabel="Submit form"
-  accessibilityHint="Double tap to submit the form"
-  accessibilityRole="button"
-  style={styles.button}
->
-  <Text>Submit</Text>
-</Pressable>
-```
-
-## AI Assistant Instructions
-
-When this skill is activated:
-
-1. **Always use Material Design 3 color roles** instead of arbitrary colors. Use primary/secondary/tertiary with their containers and on-colors.
-
-2. **Follow the type scale** for typography. Don't create custom font sizes - use the predefined type scale (displayLarge, headlineMedium, bodySmall, etc.).
-
-3. **Use the 8dp spacing system** for all margins, padding, and gaps. Stick to multiples of 4 or 8.
-
-4. **Apply proper elevation** using the predefined shadow/elevation system instead of custom shadows.
-
-5. **Implement dark mode support** by using the theme colors and `useColorScheme()` hook.
-
-6. **Follow Material Design shape system** for border radius (extraSmall: 4, small: 8, medium: 12, large: 16, extraLarge: 28, full: 9999).
-
-7. **Add state layers** for interactive components (pressed, focused states) using the opacity values.
-
-8. **Ensure accessibility** with minimum 48dp touch targets and proper accessibility props.
-
-9. **Use Material Design motion** with the standard easing curves and duration values.
-
-10. **Create responsive layouts** that adapt to different screen sizes while maintaining Material Design principles.
-
-Always:
-- Provide both light and dark theme support
-- Include TypeScript types for component props
-- Use functional components with hooks
-- Include proper accessibility props
-- Follow React Native best practices
-- Use Expo vector icons (@expo/vector-icons) for icons
-
-Never:
-- Use arbitrary colors not from the Material palette
-- Create custom shadows without using the elevation system
-- Ignore dark mode theming
-- Skip accessibility considerations
-- Use pixel values instead of the 8dp grid
-
-## Additional Resources
-
-- [Material Design 3 Guidelines](https://m3.material.io/)
-- [Material Design Color System](https://m3.material.io/styles/color/overview)
-- [Material Design Typography](https://m3.material.io/styles/typography/overview)
-- [Material Components](https://m3.material.io/components)
-- [Material Theme Builder](https://m3.material.io/theme-builder)
-- [React Native Paper](https://reactnativepaper.com/) - Material Design library for React Native
+- [Material Design 3 Components](https://m3.material.io/components)
+- [All Buttons](https://m3.material.io/components/all-buttons)
+- [Cards](https://m3.material.io/components/cards)
+- [Text Fields](https://m3.material.io/components/text-fields/guidelines)
+- [Navigation Bar](https://m3.material.io/components/navigation-bar/specs)
+- [Progress Indicators](https://m3.material.io/components/progress-indicators/guidelines)
