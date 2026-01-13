@@ -1,11 +1,13 @@
-import "../global.css";
 import { Stack } from "expo-router";
+import { PaperProvider } from "react-native-paper";
 import { WalkingProvider } from "@/contexts/WalkingContext";
-import { ThemeProvider } from "@/contexts/ThemeContext";
+import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
 
-export default function RootLayout() {
+function AppContent() {
+  const { paperTheme } = useTheme();
+
   return (
-    <ThemeProvider>
+    <PaperProvider theme={paperTheme}>
       <WalkingProvider>
         <Stack
           screenOptions={{
@@ -13,6 +15,14 @@ export default function RootLayout() {
           }}
         />
       </WalkingProvider>
+    </PaperProvider>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <ThemeProvider>
+      <AppContent />
     </ThemeProvider>
   );
 }
