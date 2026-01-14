@@ -11,9 +11,13 @@
     "lint": "expo lint"
   },
   "dependencies": {
+    "@expo/html-elements": "^0.13.8",
     "@expo/vector-icons": "^15.0.3",
+    "@gluestack-ui/button": "^1.0.14",
     "@gluestack-ui/core": "^3.0.12",
+    "@gluestack-ui/icon": "^0.1.27",
     "@gluestack-ui/nativewind-utils": "^1.0.28",
+    "@gluestack-ui/pressable": "^0.1.23",
     "@gluestack-ui/utils": "^3.0.15",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-navigation/bottom-tabs": "^7.4.0",

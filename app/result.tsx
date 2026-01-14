@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import { ScrollView } from 'react-native';
-import { useRouter } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useWalkingContext } from '@/contexts/WalkingContext';
-import { WalkingStats } from '@/components/WalkingStats';
 import { MoodSelector } from '@/components/MoodSelector';
+import { Box, Pressable, Text, VStack } from '@/components/ui';
+import { WalkingStats } from '@/components/WalkingStats';
+import { useWalkingContext } from '@/contexts/WalkingContext';
 import { MoodType } from '@/types/walking';
-import { Box, Text, HStack, VStack, Icon, Button, ButtonText, ButtonIcon, Pressable } from '@/components/ui';
-import { CheckCircle, ChevronLeft, Check } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
+import { Check, X } from 'lucide-react-native';
+import { useEffect, useState } from 'react';
+import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ResultScreen() {
   const router = useRouter();
@@ -36,78 +36,61 @@ export default function ResultScreen() {
   }
 
   return (
-    <Box className="flex-1 bg-gray-50" style={{ paddingTop: insets.top }}>
-      {/* Header */}
-      <HStack className="px-2 py-3 bg-white items-center shadow-sm">
-        <Pressable
-          className="p-2 rounded-full active:bg-gray-100"
-          onPress={() => router.replace('/' as never)}
+    <Box
+      className="flex-1 bg-surface"
+      style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
+    >
+      {/* Main Content - Left aligned minimal design */}
+      <VStack className="flex-1 px-8 justify-center" space="xl">
+        {/* Header */}
+        <Text
+          className="text-on-surface mb-12"
+          style={{ fontSize: 36, fontWeight: '600' }}
         >
-          <Icon as={ChevronLeft} size="md" color="#374151" />
-        </Pressable>
-        <Text className="text-lg font-semibold text-gray-900 ml-2">ウォーキング完了</Text>
-      </HStack>
-
-      <ScrollView
-        contentContainerStyle={{ paddingBottom: 16 }}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Success Header */}
-        <VStack className="items-center py-8 px-6 bg-primary-100 mb-2" space="md">
-          <Box className="mb-2">
-            <Icon as={CheckCircle} size="2xl" color="#0077E6" />
-          </Box>
-          <Text className="text-xl font-semibold text-primary-900">
-            お疲れさまでした！
-          </Text>
-          <Text className="text-primary-700 opacity-80">
-            ウォーキングが完了しました
-          </Text>
-        </VStack>
+          Great Job!
+        </Text>
 
         {/* Stats */}
-        <Box className="px-4 py-4">
-          <Text className="text-base font-semibold text-gray-900 mb-3 ml-1">
-            記録
-          </Text>
-          <WalkingStats
-            elapsedTime={currentRecord.duration || 0}
-            distance={currentRecord.distance || 0}
-          />
-        </Box>
+        <WalkingStats
+          elapsedTime={currentRecord.duration || 0}
+          distance={currentRecord.distance || 0}
+        />
 
         {/* Mood Selector */}
-        <Box className="px-4 py-2">
-          <Text className="text-base font-semibold text-gray-900 mb-3 ml-1">
-            気分を記録
-          </Text>
-          <MoodSelector selectedMood={selectedMood} onSelect={setSelectedMood} />
-        </Box>
-      </ScrollView>
+        <MoodSelector
+         selectedMood={selectedMood} onSelect={setSelectedMood} />
+      </VStack>
 
-      {/* Action Buttons */}
-      <HStack
-        className="px-4 pt-4 bg-white justify-end shadow-lg"
-        space="md"
-        style={{ paddingBottom: insets.bottom + 16 }}
-      >
-        <Button
-          action="secondary"
-          variant="outline"
+      {/* Action Buttons - Fixed at bottom */}
+      <Box className="flex-row justify-center gap-4 pb-8 px-8">
+        <Pressable
           onPress={handleSkip}
-          className="min-w-24"
+          accessibilityLabel="スキップ"
+          accessibilityRole="button"
+          className="flex-row items-center justify-center gap-2 rounded-full px-6 py-4 bg-surface-container-high"
         >
-          <ButtonText>スキップ</ButtonText>
-        </Button>
-        <Button
-          action="primary"
+          <View>
+            <X size={20} color="#161D1B" />
+          </View>
+          <Text className="text-body-large font-medium text-on-surface">
+            Skip
+          </Text>
+        </Pressable>
+
+        <Pressable
           onPress={handleSave}
-          className="min-w-24"
+          accessibilityLabel="保存"
+          accessibilityRole="button"
+          className="flex-row items-center justify-center gap-2 rounded-full px-6 py-4 bg-on-surface"
         >
-          <ButtonIcon as={Check} />
-          <ButtonText>保存</ButtonText>
-        </Button>
-      </HStack>
+          <View>
+            <Check size={20} color="#EFEFEF" />
+          </View>
+          <Text className="text-body-large font-medium text-surface">
+            Save
+          </Text>
+        </Pressable>
+      </Box>
     </Box>
   );
 }

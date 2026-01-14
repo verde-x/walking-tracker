@@ -1,49 +1,53 @@
-import { Clock, MapPin } from 'lucide-react-native';
-import { formatDuration, formatDistance } from '@/utils/format';
-import { Box, Card, Text, HStack, VStack, Icon } from '@/components/ui';
+import { formatDuration, formatDistanceWithUnit } from '@/utils/format';
+import { HStack, Text, VStack } from '@/components/ui';
 
 type Props = {
   elapsedTime: number;
   distance: number;
 };
 
+type StatItemProps = {
+  label: string;
+  value: string;
+  unit?: string;
+};
+
+function StatItem({ label, value, unit }: StatItemProps) {
+  return (
+    <VStack className="items-start">
+      <Text className="text-body-medium text-on-surface-variant mb-1">{label}</Text>
+      <HStack className="items-baseline">
+        <Text
+          className="text-on-surface"
+          style={{ fontSize: 72, lineHeight: 80, fontWeight: '300' }}
+        >
+          {value}
+        </Text>
+        {unit && (
+          <Text
+            className="text-on-surface-variant ml-2"
+            style={{ fontSize: 24, lineHeight: 32 }}
+          >
+            {unit}
+          </Text>
+        )}
+      </HStack>
+    </VStack>
+  );
+}
+
 export function WalkingStats({ elapsedTime, distance }: Props) {
+  const { value: distanceValue, unit: distanceUnit } = formatDistanceWithUnit(distance);
+
   return (
     <VStack
-      space="md"
       className="w-full"
+      space="xl"
       accessible={true}
-      accessibilityLabel={`経過時間 ${formatDuration(elapsedTime)}, 距離 ${formatDistance(distance)}`}
+      accessibilityLabel={`経過時間 ${formatDuration(elapsedTime)}, 距離 ${distanceValue} ${distanceUnit}`}
     >
-      {/* Time Stat Card */}
-      <Card variant="elevated" className="p-4">
-        <HStack space="lg" className="items-center">
-          <Box className="w-14 h-14 items-center justify-center rounded-2xl bg-primary-100">
-            <Icon as={Clock} size="lg" color="#0077E6" />
-          </Box>
-          <VStack space="xs" className="flex-1">
-            <Text className="text-sm text-gray-500">経過時間</Text>
-            <Text className="text-3xl font-semibold text-gray-900 tracking-tight">
-              {formatDuration(elapsedTime)}
-            </Text>
-          </VStack>
-        </HStack>
-      </Card>
-
-      {/* Distance Stat Card */}
-      <Card variant="elevated" className="p-4">
-        <HStack space="lg" className="items-center">
-          <Box className="w-14 h-14 items-center justify-center rounded-2xl bg-green-100">
-            <Icon as={MapPin} size="lg" color="#22c55e" />
-          </Box>
-          <VStack space="xs" className="flex-1">
-            <Text className="text-sm text-gray-500">距離</Text>
-            <Text className="text-3xl font-semibold text-gray-900 tracking-tight">
-              {formatDistance(distance)}
-            </Text>
-          </VStack>
-        </HStack>
-      </Card>
+      <StatItem label="Distance" value={distanceValue} unit={distanceUnit} />
+      <StatItem label="Time" value={formatDuration(elapsedTime)} />
     </VStack>
   );
 }
