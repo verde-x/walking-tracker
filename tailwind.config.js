@@ -8,16 +8,40 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // React Native Reusables color tokens
+        border: '#E0E0E0',
+        input: '#E0E0E0',
+        ring: '#65558f',
+        background: '#EFEFEF',
+        foreground: '#161D1B',
+        destructive: {
+          DEFAULT: '#BA1A1A',
+          foreground: '#FFFFFF',
+        },
+        muted: {
+          DEFAULT: '#E8E8E8',
+          foreground: '#3F4946',
+        },
+        accent: {
+          DEFAULT: '#E8E8E8',
+          foreground: '#161D1B',
+        },
+        card: {
+          DEFAULT: '#FFFFFF',
+          foreground: '#161D1B',
+        },
         // Material Design 3 Color Tokens (Light Theme)
         // Primary - Teal/Green accent for walking/health theme
         primary: {
           DEFAULT: '#65558f',
+          foreground: '#FFFFFF',
           container: '#9CF2E4',
           on: '#FFFFFF',
           'on-container': '#00201C',
         },
         secondary: {
           DEFAULT: '#4A635E',
+          foreground: '#FFFFFF',
           container: '#CCE8E2',
           on: '#FFFFFF',
           'on-container': '#06201C',
@@ -98,5 +122,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-animate')],
 };
