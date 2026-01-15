@@ -1,5 +1,6 @@
-import { formatDuration, formatDistanceWithUnit } from '@/utils/format';
-import { HStack, Text, VStack } from '@/components/ui';
+import { Text } from '@/components/ui';
+import { formatDistanceWithUnit, formatDuration } from '@/utils/format';
+import { View } from 'react-native';
 
 type Props = {
   elapsedTime: number;
@@ -14,25 +15,25 @@ type StatItemProps = {
 
 function StatItem({ label, value, unit }: StatItemProps) {
   return (
-    <VStack className="items-start">
-      <Text className="text-body-medium text-on-surface-variant mb-1">{label}</Text>
-      <HStack className="items-baseline">
+    <View className="flex-col items-start">
+      <Text className="text-sm text-muted-foreground mb-1">{label}</Text>
+      <View className="flex-row items-baseline">
         <Text
-          className="text-on-surface"
+          className="text-foreground"
           style={{ fontSize: 72, lineHeight: 80, fontWeight: '300' }}
         >
           {value}
         </Text>
         {unit && (
           <Text
-            className="text-on-surface-variant ml-2"
+            className="text-muted-foreground ml-2"
             style={{ fontSize: 24, lineHeight: 32 }}
           >
             {unit}
           </Text>
         )}
-      </HStack>
-    </VStack>
+      </View>
+    </View>
   );
 }
 
@@ -40,14 +41,13 @@ export function WalkingStats({ elapsedTime, distance }: Props) {
   const { value: distanceValue, unit: distanceUnit } = formatDistanceWithUnit(distance);
 
   return (
-    <VStack
-      className="w-full"
-      space="xl"
+    <View
+      className="flex-col gap-6 w-full"
       accessible={true}
       accessibilityLabel={`経過時間 ${formatDuration(elapsedTime)}, 距離 ${distanceValue} ${distanceUnit}`}
     >
       <StatItem label="Distance" value={distanceValue} unit={distanceUnit} />
       <StatItem label="Time" value={formatDuration(elapsedTime)} />
-    </VStack>
+    </View>
   );
 }

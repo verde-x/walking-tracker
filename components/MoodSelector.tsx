@@ -1,5 +1,6 @@
-import { HStack, Pressable, Text, VStack } from '@/components/ui';
+import { Text } from '@/components/ui';
 import { MOODS, MoodType } from '@/types/walking';
+import { Pressable, View } from 'react-native';
 
 type Props = {
   selectedMood?: MoodType;
@@ -8,11 +9,11 @@ type Props = {
 
 export function MoodSelector({ selectedMood, onSelect }: Props) {
   return (
-    <VStack className="items-start" space="md">
-      <Text className="text-body-medium text-on-surface-variant mt-8">
+    <View className="flex-col gap-3 items-start">
+      <Text className="text-sm text-muted-foreground mt-8">
         How do you feel?
       </Text>
-      <HStack space="md" className="flex-wrap">
+      <View className="flex-row gap-3 flex-wrap">
         {MOODS.map((mood) => {
           const isSelected = selectedMood === mood.type;
           return (
@@ -22,16 +23,14 @@ export function MoodSelector({ selectedMood, onSelect }: Props) {
               accessibilityLabel={`気分: ${mood.label}`}
               accessibilityState={{ selected: isSelected }}
               className={`w-14 h-14 rounded-full items-center justify-center ${
-                isSelected
-                  ? 'bg-on-surface'
-                  : 'bg-surface-container-high active:bg-surface-container-highest'
+                isSelected ? 'bg-primary' : 'bg-secondary active:bg-accent'
               }`}
             >
               <Text className="text-3xl">{mood.emoji}</Text>
             </Pressable>
           );
         })}
-      </HStack>
-    </VStack>
+      </View>
+    </View>
   );
 }

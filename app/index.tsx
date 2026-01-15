@@ -1,8 +1,9 @@
 import { WalkingButton } from '@/components/WalkingButton';
 import { WalkingStats } from '@/components/WalkingStats';
-import { Box, Text, VStack } from '@/components/ui';
+import { Text } from '@/components/ui';
 import { useWalkingContext } from '@/contexts/WalkingContext';
 import { useRouter } from 'expo-router';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
@@ -16,32 +17,32 @@ export default function HomeScreen() {
   };
 
   return (
-    <Box
-      className="flex-1 bg-surface"
+    <View
+      className="flex-1 bg-background"
       style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
     >
-      {/* Main Content - Left aligned minimal design */}
-      <VStack className="flex-1 px-8 justify-center" space="xl">
+      {/* Main Content */}
+      <View className="flex-1 flex-col gap-6 w-full px-8 justify-center">
         {/* Header */}
         <Text
-          className="text-on-surface mb-12"
-          style={{ fontSize: 36, fontWeight: '600' }}
+          className="text-foreground mb-8 w-full"
+          style={{ fontSize: 36, fontWeight: '600', lineHeight: 50 }}
         >
           Walking Tracker
         </Text>
 
         {/* Stats */}
         <WalkingStats elapsedTime={elapsedTime} distance={distance} />
-      </VStack>
+      </View>
 
       {/* Action Button - Fixed at bottom */}
-      <Box className="items-center pb-8 px-8">
+      <View className="items-center pb-8 px-8">
         <WalkingButton
           isWalking={state === 'walking'}
           onStart={start}
           onStop={handleStop}
         />
-      </Box>
-    </Box>
+      </View>
+    </View>
   );
 }

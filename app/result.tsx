@@ -1,12 +1,12 @@
 import { MoodSelector } from '@/components/MoodSelector';
-import { Box, Pressable, Text, VStack } from '@/components/ui';
+import { Text } from '@/components/ui';
 import { WalkingStats } from '@/components/WalkingStats';
 import { useWalkingContext } from '@/contexts/WalkingContext';
 import { MoodType } from '@/types/walking';
 import { useRouter } from 'expo-router';
 import { Check, X } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ResultScreen() {
@@ -36,16 +36,16 @@ export default function ResultScreen() {
   }
 
   return (
-    <Box
-      className="flex-1 bg-surface"
+    <View
+      className="flex-1 bg-background"
       style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}
     >
-      {/* Main Content - Left aligned minimal design */}
-      <VStack className="flex-1 px-8 justify-center" space="xl">
+      {/* Main Content */}
+      <View className="flex-1 flex-col gap-6 w-full px-8 justify-center">
         {/* Header */}
         <Text
-          className="text-on-surface mb-12"
-          style={{ fontSize: 36, fontWeight: '600' }}
+          className="text-foreground mb-8 w-full"
+          style={{ fontSize: 44, fontWeight: '600', lineHeight: 60 }}
         >
           Great Job!
         </Text>
@@ -57,22 +57,21 @@ export default function ResultScreen() {
         />
 
         {/* Mood Selector */}
-        <MoodSelector
-         selectedMood={selectedMood} onSelect={setSelectedMood} />
-      </VStack>
+        <MoodSelector selectedMood={selectedMood} onSelect={setSelectedMood} />
+      </View>
 
       {/* Action Buttons - Fixed at bottom */}
-      <Box className="flex-row justify-center gap-4 pb-8 px-8">
+      <View className="flex-row justify-center gap-4 pb-8 px-8">
         <Pressable
           onPress={handleSkip}
           accessibilityLabel="スキップ"
           accessibilityRole="button"
-          className="flex-row items-center justify-center gap-2 rounded-full px-6 py-4 bg-surface-container-high"
+          className="flex-row items-center justify-center gap-2 rounded-full px-6 py-4 bg-secondary"
         >
           <View>
-            <X size={20} color="#161D1B" />
+            <X size={20} color="hsl(240 5.9% 10%)" />
           </View>
-          <Text className="text-body-large font-medium text-on-surface">
+          <Text className="text-base font-medium text-secondary-foreground">
             Skip
           </Text>
         </Pressable>
@@ -81,16 +80,16 @@ export default function ResultScreen() {
           onPress={handleSave}
           accessibilityLabel="保存"
           accessibilityRole="button"
-          className="flex-row items-center justify-center gap-2 rounded-full px-6 py-4 bg-on-surface"
+          className="flex-row items-center justify-center gap-2 rounded-full px-6 py-4 bg-primary"
         >
           <View>
-            <Check size={20} color="#EFEFEF" />
+            <Check size={20} color="hsl(0 0% 98%)" />
           </View>
-          <Text className="text-body-large font-medium text-surface">
+          <Text className="text-base font-medium text-primary-foreground">
             Save
           </Text>
         </Pressable>
-      </Box>
-    </Box>
+      </View>
+    </View>
   );
 }
