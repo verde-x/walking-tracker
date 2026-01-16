@@ -23,16 +23,15 @@ export async function getCurrentLocation(): Promise<LocationPoint | null> {
 }
 
 export function startLocationTracking(
-  callback: (location: LocationPoint) => void,
-  intervalMs: number = 5000
+  callback: (location: LocationPoint) => void
 ): { stop: () => void } {
   let subscription: Location.LocationSubscription | null = null;
 
   Location.watchPositionAsync(
     {
-      accuracy: Location.Accuracy.High,
-      timeInterval: intervalMs,
-      distanceInterval: 5,
+      accuracy: Location.Accuracy.Balanced,
+      timeInterval: 2000,
+      distanceInterval: 0,
     },
     (location) => {
       callback({
@@ -47,6 +46,8 @@ export function startLocationTracking(
   });
 
   return {
-    stop: () => subscription?.remove(),
+    stop: () => {
+      subscription?.remove();
+    },
   };
 }
