@@ -12,7 +12,7 @@ export function WalkingButton({ isWalking, onStart, onStop }: Props) {
   return (
     <Pressable
       onPress={isWalking ? onStop : onStart}
-      accessibilityLabel={isWalking ? 'ウォーキングを終了する' : 'ウォーキングを開始する'}
+      accessibilityLabel={isWalking ? 'End walking' : 'Start walking'}
       accessibilityRole="button"
       className="flex-row items-center justify-center gap-3 rounded-full px-8 py-4 bg-primary"
     >
