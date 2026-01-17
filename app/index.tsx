@@ -1,4 +1,4 @@
-import { WalkingButton } from '@/components/WalkingButton';
+import { WalkingControls } from '@/components/WalkingControls';
 import { WalkingStats } from '@/components/WalkingStats';
 import { Text } from '@/components/ui';
 import { useWalkingContext } from '@/contexts/WalkingContext';
@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function HomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { state, elapsedTime, distance, start, stop } = useWalkingContext();
+  const { state, elapsedTime, distance, start, pause, resume, stop } = useWalkingContext();
 
   const handleStop = () => {
     stop();
@@ -35,11 +35,13 @@ export default function HomeScreen() {
         <WalkingStats elapsedTime={elapsedTime} distance={distance} />
       </View>
 
-      {/* Action Button - Fixed at bottom */}
+      {/* Action Buttons - Fixed at bottom */}
       <View className="items-center pb-8 px-8">
-        <WalkingButton
-          isWalking={state === 'walking'}
+        <WalkingControls
+          state={state}
           onStart={start}
+          onPause={pause}
+          onResume={resume}
           onStop={handleStop}
         />
       </View>

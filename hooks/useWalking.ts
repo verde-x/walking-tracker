@@ -16,13 +16,17 @@ export function useWalking() {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const locationTrackerRef = useRef<{ stop: () => void } | null>(null);
 
+  // 一時停止機能用のref
+  const accumulatedTimeRef = useRef(0); // 一時停止前の累積時間
+  const resumeTimeRef = useRef<number | null>(null); // 再開時刻
+
   // タイマー更新
   useEffect(() => {
     if (state === 'walking') {
       timerRef.current = setInterval(() => {
-        if (startTimeRef.current) {
-          const elapsed = Math.floor((Date.now() - startTimeRef.current.getTime()) / 1000);
-          setElapsedTime(elapsed);
+        if (resumeTimeRef.current !== null) {
+          const timeSinceResume = Math.floor((Date.now() - resumeTimeRef.current) / 1000);
+          setElapsedTime(accumulatedTimeRef.current + timeSinceResume);
         }
       }, 1000);
     }
@@ -39,6 +43,8 @@ export function useWalking() {
 
     startTimeRef.current = new Date();
     locationsRef.current = [];
+    accumulatedTimeRef.current = 0;
+    resumeTimeRef.current = Date.now();
     setElapsedTime(0);
     setDistance(0);
     setState('walking');
@@ -57,6 +63,42 @@ export function useWalking() {
     });
 
     return true;
+  }, []);
+
+  const pause = useCallback(() => {
+    // タイマーを停止
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+
+    // GPS追跡を停止
+    if (locationTrackerRef.current) {
+      locationTrackerRef.current.stop();
+      locationTrackerRef.current = null;
+    }
+
+    // 累積時間を保存
+    if (resumeTimeRef.current !== null) {
+      const timeSinceResume = Math.floor((Date.now() - resumeTimeRef.current) / 1000);
+      accumulatedTimeRef.current += timeSinceResume;
+      resumeTimeRef.current = null;
+    }
+
+    setState('paused');
+  }, []);
+
+  const resume = useCallback(async () => {
+    // 再開時刻を記録
+    resumeTimeRef.current = Date.now();
+    setState('walking');
+
+    // GPS追跡を再開
+    locationTrackerRef.current = startLocationTracking((location) => {
+      locationsRef.current.push(location);
+      const totalDistance = calculateTotalDistance(locationsRef.current);
+      setDistance(totalDistance);
+    });
   }, []);
 
   const stop = useCallback(() => {
@@ -97,6 +139,8 @@ export function useWalking() {
     setState('idle');
     setElapsedTime(0);
     setDistance(0);
+    accumulatedTimeRef.current = 0;
+    resumeTimeRef.current = null;
   }, []);
 
   return {
@@ -105,6 +149,8 @@ export function useWalking() {
     distance,
     currentRecord,
     start,
+    pause,
+    resume,
     stop,
     saveWithMood,
     reset,

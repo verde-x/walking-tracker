@@ -30,4 +30,4 @@ export interface LocationPoint {
 }
 
 // ウォーキング状態
-export type WalkingState = 'idle' | 'walking' | 'finished';
+export type WalkingState = 'idle' | 'walking' | 'paused' | 'finished';

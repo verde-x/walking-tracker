@@ -61,12 +61,12 @@ export default function ResultScreen() {
       </View>
 
       {/* Action Buttons - Fixed at bottom */}
-      <View className="flex-row justify-center gap-4 pb-8 px-8">
+      <View className="flex-row gap-4 pb-8 px-8">
         <Pressable
           onPress={handleSkip}
-          accessibilityLabel="スキップ"
+          accessibilityLabel="Skip"
           accessibilityRole="button"
-          className="flex-row items-center justify-center gap-2 rounded-full px-6 py-4 bg-secondary"
+          className="flex-1 flex-row items-center justify-center gap-3 rounded-full px-6 py-4 bg-secondary"
         >
           <View>
             <X size={20} color="hsl(240 5.9% 10%)" />
@@ -78,9 +78,9 @@ export default function ResultScreen() {
 
         <Pressable
           onPress={handleSave}
-          accessibilityLabel="保存"
+          accessibilityLabel="Save"
           accessibilityRole="button"
-          className="flex-row items-center justify-center gap-2 rounded-full px-6 py-4 bg-primary"
+          className="flex-1 flex-row items-center justify-center gap-3 rounded-full px-6 py-4 bg-primary"
         >
           <View>
             <Check size={20} color="hsl(0 0% 98%)" />
